@@ -1,0 +1,29 @@
+<component name="libraryTable">
+  <library name="ai.djl:basicdataset:0.4.0" type="repository">
+    <properties maven-id="ai.djl:basicdataset:0.4.0" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/basicdataset-0.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/repository-0.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/gson-2.8.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/api-0.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jna-5.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.26.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/basicdataset-0.4.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/repository-0.4.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/gson-2.8.5-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/api-0.4.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jna-5.3.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.26-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/basicdataset-0.4.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/repository-0.4.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/gson-2.8.5-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/api-0.4.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jna-5.3.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.26-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

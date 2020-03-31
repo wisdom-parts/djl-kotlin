@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/djl-kotlin.iml" filepath="$PROJECT_DIR$/djl-kotlin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api/api.iml" filepath="$PROJECT_DIR$/api/api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/basicdataset/basicdataset.iml" filepath="$PROJECT_DIR$/basicdataset/basicdataset.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examplemnist1d/examplemnist1d.iml" filepath="$PROJECT_DIR$/examplemnist1d/examplemnist1d.iml" />
+      <module fileurl="file://$PROJECT_DIR$/model-zoo/model-zoo.iml" filepath="$PROJECT_DIR$/model-zoo/model-zoo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/root.iml" filepath="$PROJECT_DIR$/root.iml" />
     </modules>
   </component>
 </project>
