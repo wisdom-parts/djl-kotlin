@@ -4,7 +4,9 @@ import ai.djl.Model
 import ai.djl.basicdataset.Mnist
 import ai.djl.basicmodelzoo.basic.Mlp
 import ai.djl.metric.Metrics
+import ai.djl.ndarray.NDList
 import ai.djl.ndarray.types.Shape
+import ai.djl.nn.Activation
 import ai.djl.training.DefaultTrainingConfig
 import ai.djl.training.Trainer
 import ai.djl.training.dataset.Dataset
@@ -12,15 +14,28 @@ import ai.djl.training.dataset.RandomAccessDataset
 import ai.djl.training.evaluator.Accuracy
 import ai.djl.training.listener.TrainingListener
 import ai.djl.training.loss.Loss
+import java.io.File
 import java.nio.file.Paths
 
 private const val MNIST_NUM_OUTPUTS = 10
-private val MNIST_HIDDEN_SIZES = intArrayOf(128, 64)
+private val MNIST_HIDDEN_SIZES = intArrayOf(2048, 64)
+private const val MNIST_BATCH_SIZE = 64
+
 private const val MNIST_EPOCHS = 10
+
+private const val MNIST_ACTIVATION_NAME = "leakyRelu0.1"
+private val MNIST_ACTIVATION: (NDList) -> NDList = {
+    Activation.leakyRelu(it, 0.1f)
+}
+
+private val METRICS_TO_REPORT = arrayOf(
+    "validate_epoch_Accuracy",
+    "validate_epoch_SoftmaxCrossEntropyLoss"
+)
 
 private val modelName = run {
     val hiddenSizes = MNIST_HIDDEN_SIZES.joinToString(separator = "-")
-    "mnist1d epochs-$MNIST_EPOCHS HIDDEN-$hiddenSizes"
+    "mnist1d_${hiddenSizes}_batch${MNIST_BATCH_SIZE}_$MNIST_ACTIVATION_NAME"
 }
 
 fun main() {
@@ -31,7 +46,24 @@ fun main() {
 
     trainModel(trainer, trainingSet, validationSet)
 
+    File("models", modelName + "_metrics.txt").writeText(metricsReport(trainer))
+
     model.save(Paths.get("models"), modelName)
+}
+
+private fun metricsReport(trainer: Trainer): String {
+    val maxMetricNameLength = METRICS_TO_REPORT.map { it.length }.max() ?: 0
+
+    fun formatMetricsLine(metricName: String): String {
+        val label = metricName.padEnd(maxMetricNameLength)
+        val value = trainer.metrics.latestMetric(metricName).value ?: "<not recorded>"
+        return "$label = $value"
+    }
+
+    return METRICS_TO_REPORT.joinToString(
+        separator = "\n",
+        transform = ::formatMetricsLine
+    )
 }
 
 private fun trainModel(
@@ -57,7 +89,8 @@ private fun createModel(): Model =
         block = Mlp(
             Mnist.IMAGE_HEIGHT * Mnist.IMAGE_WIDTH,
             MNIST_NUM_OUTPUTS,
-            MNIST_HIDDEN_SIZES
+            MNIST_HIDDEN_SIZES,
+            MNIST_ACTIVATION
         )
     }
 
@@ -71,8 +104,6 @@ private fun createTrainer(model: Model): Trainer {
         initialize(Shape(1, (Mnist.IMAGE_HEIGHT * Mnist.IMAGE_WIDTH).toLong()))
     }
 }
-
-private const val MNIST_BATCH_SIZE = 32
 
 private fun prepareMnist(usage: Dataset.Usage): RandomAccessDataset =
     Mnist.builder()
