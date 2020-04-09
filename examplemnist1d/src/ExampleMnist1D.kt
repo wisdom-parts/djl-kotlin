@@ -16,7 +16,7 @@ import java.nio.file.Paths
 
 private const val MNIST_NUM_OUTPUTS = 10
 private val MNIST_HIDDEN_SIZES = intArrayOf(128, 64)
-private const val MNIST_EPOCHS = 5
+private const val MNIST_EPOCHS = 10
 
 private val modelName = run {
     val hiddenSizes = MNIST_HIDDEN_SIZES.joinToString(separator = "-")
