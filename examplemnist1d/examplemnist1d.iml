@@ -8,10 +8,12 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="KotlinJavaRuntime (4)" level="project" />
     <orderEntry type="module" module-name="api" />
     <orderEntry type="module" module-name="basicdataset" />
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
     <orderEntry type="module" module-name="model-zoo" />
+    <orderEntry type="library" name="org.slf4j:slf4j-simple:1.7.30" level="application" />
+    <orderEntry type="library" name="ai.djl.mxnet:mxnet-native-auto:1.6.0" level="project" />
+    <orderEntry type="library" name="ai.djl.mxnet:mxnet-engine:0.4.0" level="project" />
   </component>
 </module>

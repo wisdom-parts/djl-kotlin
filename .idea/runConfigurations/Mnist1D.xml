@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Mnist1D" type="JetRunConfigurationType">
+    <module name="examplemnist1d" />
+    <option name="VM_PARAMETERS" value="-Dorg.slf4j.simpleLogger.defaultLogLevel=debug" />
+    <option name="PROGRAM_PARAMETERS" value="" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <option name="PASS_PARENT_ENVS" value="true" />
+    <option name="MAIN_CLASS_NAME" value="parts.wisdom.djlkot.example.mnist1d.ExampleMnist1DKt" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/examplemnist1d" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
