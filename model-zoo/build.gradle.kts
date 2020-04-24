@@ -3,7 +3,8 @@ plugins {
 }
 
 dependencies {
-    api("ai.djl:model-zoo:0.4.0")
+    val djlVersion: String by project
+    api("ai.djl:model-zoo:$djlVersion")
 
     implementation(kotlin("stdlib-jdk8"))
     testImplementation(kotlin("test"))

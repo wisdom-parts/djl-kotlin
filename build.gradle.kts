@@ -7,7 +7,8 @@ allprojects {
     version = "0.0.1"
 
     repositories {
-        jcenter() 
+        jcenter()
+        maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
     }
 }
 

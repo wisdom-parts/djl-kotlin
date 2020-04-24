@@ -3,7 +3,8 @@ plugins {
 }
 
 dependencies {
-    api("ai.djl:basicdataset:0.4.0")
+    val djlVersion: String by project
+    api("ai.djl:basicdataset:$djlVersion")
 
     implementation(kotlin("stdlib-jdk8"))
     testImplementation(kotlin("test"))
