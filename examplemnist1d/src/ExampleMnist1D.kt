@@ -18,15 +18,13 @@ import java.io.File
 import java.nio.file.Paths
 
 private const val MNIST_NUM_OUTPUTS = 10
-private val MNIST_HIDDEN_SIZES = intArrayOf(2048, 64)
-private const val MNIST_BATCH_SIZE = 64
+private val MNIST_HIDDEN_SIZES = intArrayOf(100)
+private const val MNIST_BATCH_SIZE = 50
 
 private const val MNIST_EPOCHS = 10
 
-private const val MNIST_ACTIVATION_NAME = "leakyRelu0.1"
-private val MNIST_ACTIVATION: (NDList) -> NDList = {
-    Activation.leakyRelu(it, 0.1f)
-}
+private const val MNIST_ACTIVATION_NAME = "sigmoid"
+private val MNIST_ACTIVATION: (NDList) -> NDList = Activation::sigmoid
 
 private val METRICS_TO_REPORT = arrayOf(
     "validate_epoch_Accuracy",
