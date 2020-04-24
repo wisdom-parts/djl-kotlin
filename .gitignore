@@ -1,3 +1,9 @@
+###### Project-specific
+
+examplemnist1d/models/
+
+###### Kotlin
+
 # Compiled class file
 *.class
 
