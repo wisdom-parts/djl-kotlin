@@ -1,6 +1,6 @@
 ###### Project-specific
 
-examplemnist1d/models/
+examples/mnist1d/models/
 
 ###### Kotlin
 
@@ -50,3 +50,6 @@ gradle-app.setting
 ###### MacOS
 
 .DS_Store
+
+# Ignore Gradle build output directory
+build

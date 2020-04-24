@@ -1,4 +1,4 @@
-package parts.wisdom.djlkot.example.mnist1d
+package parts.wisdom.djlkotlin.examples.mnist1d
 
 import ai.djl.Model
 import ai.djl.basicdataset.Mnist
