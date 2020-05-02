@@ -35,6 +35,12 @@ dependencies {
             runtimeOnly("ai.djl.mxnet:mxnet-engine:$djlVersion")
             runtimeOnly("ai.djl.mxnet:mxnet-native-auto:1.6.0")
         }
+        "pytorch" -> {
+            runtimeOnly("ai.djl.pytorch:pytorch-engine:$djlVersion")
+            runtimeOnly("ai.djl.pytorch:pytorch-native-auto:1.5.0-SNAPSHOT")
+//            runtimeOnly("ai.djl.pytorch:pytorch-native-cpu:osx-x86_64:1.4.0")
+        }
+        else -> throw IllegalStateException("Unrecognized engine config: \"$djlEngine\"")
     }
 }
 

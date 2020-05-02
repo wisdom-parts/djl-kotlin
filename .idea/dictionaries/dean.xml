@@ -2,6 +2,7 @@
   <dictionary name="dean">
     <words>
       <w>mxnet</w>
+      <w>pytorch</w>
       <w>tensorflow</w>
     </words>
   </dictionary>
