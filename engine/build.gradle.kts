@@ -5,9 +5,12 @@ plugins {
 dependencies {
     val djlVersion: String by project
     api(platform("ai.djl:bom:$djlVersion"))
-    api("ai.djl:basicdataset")
 
-    // implementation(kotlin("stdlib-jdk8"))
+    val djlEngine: String by project
+    val e = djlEngine.toLowerCase()
+    api("ai.djl.$e:$e-engine")
+    api("ai.djl.$e:$e-native-auto")
+
     testImplementation(kotlin("test-junit"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
 
@@ -18,3 +21,4 @@ dependencies {
         }
     }
 }
+

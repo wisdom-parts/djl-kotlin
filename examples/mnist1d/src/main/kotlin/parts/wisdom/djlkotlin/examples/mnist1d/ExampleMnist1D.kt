@@ -1,111 +1,51 @@
 package parts.wisdom.djlkotlin.examples.mnist1d
 
+import ai.djl.Application
 import ai.djl.Model
-import ai.djl.basicdataset.Mnist
+import ai.djl.basicdataset.cv.classification.Mnist
 import ai.djl.basicmodelzoo.basic.Mlp
-import ai.djl.metric.Metrics
-import ai.djl.ndarray.NDList
 import ai.djl.ndarray.types.Shape
 import ai.djl.nn.Activation
+import ai.djl.nn.Blocks
+import ai.djl.nn.SequentialBlock
+import ai.djl.nn.core.Linear
 import ai.djl.training.DefaultTrainingConfig
-import ai.djl.training.Trainer
-import ai.djl.training.dataset.Dataset
-import ai.djl.training.dataset.RandomAccessDataset
+import ai.djl.training.EasyTrain
 import ai.djl.training.evaluator.Accuracy
 import ai.djl.training.listener.TrainingListener
 import ai.djl.training.loss.Loss
-import java.io.File
-import java.nio.file.Paths
+import ai.djl.training.util.ProgressBar
 
-private const val MNIST_NUM_OUTPUTS = 10
-private val MNIST_HIDDEN_SIZES = intArrayOf(100)
-private const val MNIST_BATCH_SIZE = 50
 
-private const val MNIST_EPOCHS = 10
-
-private const val MNIST_ACTIVATION_NAME = "sigmoid"
-private val MNIST_ACTIVATION: (NDList) -> NDList = Activation::sigmoid
-
-private val METRICS_TO_REPORT = arrayOf(
-    "validate_epoch_Accuracy",
-    "validate_epoch_SoftmaxCrossEntropyLoss"
-)
-
-private val modelName = run {
-    val hiddenSizes = MNIST_HIDDEN_SIZES.joinToString(separator = "-")
-    "mnist1d_${hiddenSizes}_batch${MNIST_BATCH_SIZE}_$MNIST_ACTIVATION_NAME"
-}
+private const val INPUT_SIZE = 28*28
+private const val OUTPUT_SIZE = 10
+private const val BATCH_SIZE = 32
+private const val EPOCHS = 2
 
 fun main() {
-    val trainingSet = prepareMnist(Dataset.Usage.TRAIN)
-    val validationSet = prepareMnist(Dataset.Usage.TEST)
-    val model = createModel()
-    val trainer = createTrainer(model)
+    val application = Application.CV.IMAGE_CLASSIFICATION
 
-    trainModel(trainer, trainingSet, validationSet)
+    val block = SequentialBlock()
+    block.add(Blocks.batchFlattenBlock(INPUT_SIZE.toLong()));
+    block.add(Linear.builder().setUnits(128).build());
+    block.add(Activation::relu);
+    block.add(Linear.builder().setUnits(64).build());
+    block.add(Activation::relu);
+    block.add(Linear.builder().setUnits(OUTPUT_SIZE.toLong()).build());
 
-    File("models", modelName + "_metrics.txt").writeText(metricsReport(trainer))
+    val mnist = Mnist.builder().setSampling(BATCH_SIZE, true).build()
+    mnist.prepare(ProgressBar())
 
-    model.save(Paths.get("models"), modelName)
+    val model = Model.newInstance("mlp")
+    model.block = Mlp(INPUT_SIZE, OUTPUT_SIZE, intArrayOf(100))
+
+    val config =
+        DefaultTrainingConfig(Loss.softmaxCrossEntropyLoss())
+            .addEvaluator(Accuracy())
+            .addTrainingListeners(*TrainingListener.Defaults.logging())
+
+    val trainer = model.newTrainer(config)
+    trainer.initialize(Shape(1L, INPUT_SIZE.toLong()))
+
+    EasyTrain.fit(trainer, EPOCHS, mnist, null)
 }
-
-private fun metricsReport(trainer: Trainer): String {
-    val maxMetricNameLength = METRICS_TO_REPORT.map { it.length }.max() ?: 0
-
-    fun formatMetricsLine(metricName: String): String {
-        val label = metricName.padEnd(maxMetricNameLength)
-        val value = trainer.metrics.latestMetric(metricName).value ?: "<not recorded>"
-        return "$label = $value"
-    }
-
-    return METRICS_TO_REPORT.joinToString(
-        separator = "\n",
-        transform = ::formatMetricsLine
-    )
-}
-
-private fun trainModel(
-    trainer: Trainer,
-    trainingSet: RandomAccessDataset,
-    validationSet: RandomAccessDataset
-) {
-    (1..MNIST_EPOCHS).forEach {
-        for (batch in trainer.iterateDataset(trainingSet)) batch.use {
-            trainer.trainBatch(batch)
-            trainer.step()
-        }
-        for (batch in trainer.iterateDataset(validationSet)) batch.use {
-            trainer.validateBatch(batch)
-        }
-        trainer.endEpoch()
-    }
-    trainer.model.setProperty("Epoch", MNIST_EPOCHS.toString())
-}
-
-private fun createModel(): Model =
-    Model.newInstance().apply {
-        block = Mlp(
-            Mnist.IMAGE_HEIGHT * Mnist.IMAGE_WIDTH,
-            MNIST_NUM_OUTPUTS,
-            MNIST_HIDDEN_SIZES,
-            MNIST_ACTIVATION
-        )
-    }
-
-private fun createTrainer(model: Model): Trainer {
-    val trainingConfig = DefaultTrainingConfig(Loss.softmaxCrossEntropyLoss())
-        .addEvaluator(Accuracy())
-        .addTrainingListeners(*TrainingListener.Defaults.logging())
-
-    return model.newTrainer(trainingConfig).apply {
-        metrics = Metrics()
-        initialize(Shape(1, (Mnist.IMAGE_HEIGHT * Mnist.IMAGE_WIDTH).toLong()))
-    }
-}
-
-private fun prepareMnist(usage: Dataset.Usage): RandomAccessDataset =
-    Mnist.builder()
-        .optUsage(usage)
-        .setSampling(MNIST_BATCH_SIZE, true)
-        .build()
-        .apply { prepare() }

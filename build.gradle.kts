@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.5.10"
 }
 
 allprojects {
@@ -7,10 +7,8 @@ allprojects {
     version = "0.0.1"
 
     repositories {
-        jcenter()
+        mavenCentral()
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
     }
-}
 
-subprojects {
 }

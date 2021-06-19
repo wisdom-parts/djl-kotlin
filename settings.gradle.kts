@@ -1,4 +1,4 @@
 rootProject.name = "djl-kotlin"
 
-include("api", "basicdataset", "model-zoo",
+include("api", "basicdataset", "engine", "model-zoo",
         "examples:mnist1d")

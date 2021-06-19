@@ -4,10 +4,13 @@ plugins {
 
 dependencies {
     val djlVersion: String by project
-    api("ai.djl:model-zoo:$djlVersion")
+    api(platform("ai.djl:bom:$djlVersion"))
 
-    implementation(kotlin("stdlib-jdk8"))
-    testImplementation(kotlin("test"))
+    val djlEngine: String by project
+    val e = djlEngine.toLowerCase()
+    api("ai.djl:model-zoo")
+
+    // implementation(kotlin("stdlib-jdk8"))
     testImplementation(kotlin("test-junit"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
 
