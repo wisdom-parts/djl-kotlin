@@ -2,6 +2,9 @@
 
 [Deep Java Library](https://djl.ai/) bindings and other support for Kotlin.
 
+Right now, this project is entirely aspirational. I suggest thinking of it as a placeholder
+and checking again one day.
+
 This project doesn't aspire to completely cover the DJL APIs. Rather, it exposes them, but selectively provides 
 wrappers and extensions to give a safer and more idiomatic Kotlin experience. 
 
